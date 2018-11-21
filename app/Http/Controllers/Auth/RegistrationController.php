@@ -56,19 +56,31 @@ class RegistrationController extends Controller
             'email' => trim($request->get('email')),
             'password' => $request->get('password'),
         ];
-
+		
+		$activation= true;
         // Attempt the registration
-        $result = $this->authManager->register($credentials);
+        $result = $this->authManager->register($credentials, $activation);
 
         if ($result->isFailure()) {
             return $result->dispatch();
         }
 
         // Send the activation email
-        $code = $result->activation->getCode();
+        if(!$activation){
+		
+		$code = $result->activation->getCode();
         $email = $result->user->email;
         Mail::to($email)->queue(new CentaurWelcomeEmail($email, $code, 'Your account has been created!'));
-
+		$message = 'Registration complete. Please check your email for activation instructions';
+		} else 
+		{
+			$role = Sentinel::findRoleBySlug('subscriber');
+			if($role)
+			{
+				 $role->users()->attach($result->user);
+			}
+			$message= 'Registration complete';
+		}
         // Ask the user to check their email for the activation link
         $result->setMessage('Registration complete.  Please check your email for activation instructions.');
 
