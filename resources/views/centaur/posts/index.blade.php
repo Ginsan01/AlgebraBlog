@@ -23,9 +23,10 @@ Posts
 	@foreach ($posts as $post)
 	<tr>
 		<td></td>
-		<td>{{$post->}}
-
-
+		<td>{{$post->title}}</td>
+		<td></td>
+		<td></td>
+	</tr>
 	@endforeach
 	</tbody>
 </table>
