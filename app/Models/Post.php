@@ -22,4 +22,36 @@ class Post extends Model
             ]
         ];
     } 
-}
+/**
+     * Get the post that owns the comment.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+	
+	 /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['title','content','user_id'];
+	
+	
+	public function updatePost($data=array()){
+		$this->update($data);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
